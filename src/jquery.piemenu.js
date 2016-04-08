@@ -19,9 +19,10 @@
 
 		// define template elements
 		this.$ui = {
-			parent : $(false),
-			button : $(false),
-			ul     : $(element)
+			wrapper : $(false),
+			content : $(false),
+			button  : $(false),
+			ul      : $(element)
 		};
 
 		// options
@@ -71,16 +72,16 @@
 		 * @return {Void}
 		 */
 		_create: function() {
-			// wrap parent
-			this.$ui.parent = $("<div />")
-				.attr("class", ns);
-			this.$ui.ul.wrap(this.$ui.parent);
-			this.$ui.parent = this.$ui.ul.parent();
+			this.$ui.ul.wrap("<div />");
+			this.$ui.content = this.$ui.ul.parent();
 
-			// create button
+			this.$ui.content.wrap("<div />");
+			this.$ui.wrapper = this.$ui.content.parent()
+				.attr("class", ns);
+
 			this.$ui.button = $("<button />")
 				.text("Toggle")
-				.appendTo(this.$ui.parent);
+				.appendTo(this.$ui.wrapper);
 		},
 
 		/**
@@ -88,11 +89,11 @@
 		 * @return {Void}
 		 */
 		_bind: function() {
-			var $wrap = this.$ui.parent;
+			var $wrapper = this.$ui.wrapper;
 
 			// bind click event
 			this.$ui.button.on("click", function() {
-				$wrap.toggleClass("active");
+				$wrapper.toggleClass("active");
 			});
 		},
 
@@ -152,14 +153,10 @@
 			this.$ui.ul
 				.removeData("jquery." + ns)
 				.detach()
-				.insertAfter(this.$ui.parent);
+				.insertAfter(this.$ui.wrapper);
 
-			// remove parent
-			this.$ui.parent
-				.remove();
-
-			// remove button
-			this.$ui.button
+			// remove wrapper
+			this.$ui.wrapper
 				.remove();
 
 			// clear variables
