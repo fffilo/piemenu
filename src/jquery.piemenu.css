@@ -13,12 +13,12 @@
 .piemenu > button::-moz-focus-inner { border: 0 none; }
 .piemenu > button:hover { background: rgba(0,0,0,0.2); }
 
-.piemenu > div > ul, .piemenu.active > div > ul > li, .piemenu.active > div > ul > li > a { transition: all .2s ease .2s; }
-.piemenu.active > div > ul, .piemenu > div > ul > li, .piemenu > div > ul > li > a { transition: all .2s ease; }
+.piemenu > div > ul, .piemenu.active > div > ul > li, .piemenu.active > div > ul > li > a { transition: all .3s ease .2s; }
+.piemenu.active > div > ul, .piemenu > div > ul > li, .piemenu > div > ul > li > a { transition: all .3s ease; }
 .piemenu > div > ul { transform: scale(0); opacity: 0; }
 .piemenu.active > div > ul { transform: scale(1); opacity: 1; }
 .piemenu:not(.active) > div > ul > li { transform: rotate(-22.5deg) skewY(-45deg) !important; }
-.piemenu:not(.active) > div > ul > li > a { transform: skewY(45deg) rotate(22.5deg) !important; pointer-events: none; }
+.piemenu:not(.active) > div > ul > li > a { transform: skewY(45deg) rotate(22.5deg) !important; color: transparent; pointer-events: none; }
 
 .piemenu > button::after { content: "OPEN!"; }
 .piemenu.active > button::after { content: "CLOSE!"; }
