@@ -6,7 +6,7 @@
 	var ns = "piemenu";
 
 	// plugin constructor
-	var Plugin = function(element, options) {
+	$[ns] = function(element, options) {
 		// empty arguments
 		element = element || {};
 		options = options || {};
@@ -37,7 +37,7 @@
 	}
 
 	// plugin prototype
-	Plugin.prototype = {
+	$[ns].prototype = {
 
 		/**
 		 * Default options
@@ -240,9 +240,6 @@
 		}
 
 	}
-
-	// globalize plugin
-	$[ns] = Plugin;
 
 	// jQuery plugin definition
 	$.fn[ns] = function(options) {
