@@ -85,11 +85,11 @@
 		 * @return {Void}
 		 */
 		_bind: function() {
-			var $wrapper = this.$ui.wrapper;
+			var that = this;
 
 			// bind click event
 			this.$ui.button.on("click", function() {
-				$wrapper.toggleClass("active");
+				that.toggle();
 			});
 		},
 
@@ -152,6 +152,15 @@
 
 			// skew and rotate a elements
 			that.$ui.a.css("transform", "skewY(" + skew + "deg) rotate(" + (slice / 2) + "deg)");
+		},
+
+		/**
+		 * Toggle open/close
+		 *
+		 * @return {Void}
+		 */
+		toggle: function() {
+			this.$ui.wrapper.toggleClass("active");
 		},
 
 		/**
