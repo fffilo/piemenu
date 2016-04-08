@@ -58,6 +58,13 @@
 					this.options(key, options[key]);
 				}
 			}
+
+			for (var key in this._defaults) {
+				var value = this.$ui.ul.attr("data-" + ns + "-" + key);
+				if (typeof value === "string") {
+					this.options(key, value);
+				}
+			}
 		},
 
 		/**
