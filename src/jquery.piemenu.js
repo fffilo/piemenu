@@ -20,7 +20,6 @@
 		// define template elements
 		this.$ui = {
 			wrapper : $(false),
-			content : $(false),
 			button  : $(false),
 			ul      : $(element)
 		};
@@ -68,10 +67,7 @@
 		 */
 		_create: function() {
 			this.$ui.ul.wrap("<div />");
-			this.$ui.content = this.$ui.ul.parent();
-
-			this.$ui.content.wrap("<div />");
-			this.$ui.wrapper = this.$ui.content.parent()
+			this.$ui.wrapper = this.$ui.ul.parent()
 				.addClass(ns)
 				.addClass( ! this._support("transform")  ? "notransform"  : "_temp")
 				.addClass( ! this._support("transition") ? "notransition" : "_temp")
@@ -97,7 +93,7 @@
 		},
 
 		/**
-		 * Detect browser support
+		 * Detect browser css support
 		 *
 		 * @param  {String}  property
 		 * @return {Boolean}
@@ -158,16 +154,12 @@
 			var skew   = 90 - slice;
 			var start  = range / -2 + center;
 
-			// rotate content so li elements with rotate(0deg) will be positioned on center
-			that.$ui.content.css("transform", "rotate(" + slice / -2 + "deg)");
-
 			// rotate and skew li elements
 			that.$ui.li.css("transform", function() {
 				var rotate = 0
 					+ start
 					+ margin / 2
-					+ that.$ui.li.index(this) * (slice + margin)
-					- slice / -2;
+					+ that.$ui.li.index(this) * (slice + margin);
 
 				return "rotate(" + rotate + "deg) skewY(" + -1 * skew + "deg)";
 			});
