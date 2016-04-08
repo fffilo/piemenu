@@ -1,7 +1,11 @@
 ;(function($) {
 
+	"use strict";
+
+	// plugin name
 	var ns = "piemenu";
 
+	// plugin constructor
 	var Plugin = function(element, options) {
 		// empty arguments
 		element = element || {};
@@ -32,6 +36,7 @@
 		this.init();
 	}
 
+	// plugin prototype
 	Plugin.prototype = {
 
 		/**
@@ -212,8 +217,8 @@
 		 */
 		destroy: function() {
 			// reset rotate/skew
-			this.$ui.li
-				.css("transform", "");
+			this.$ui.li.css("transform", "");
+			this.$ui.a.css("transform", "");
 
 			// remove plugin from element
 			this.$ui.ul
@@ -226,12 +231,13 @@
 				.remove();
 
 			// clear variables
-			this.$ui     = undefined;
+			this.$ui      = undefined;
 			this._options = undefined;
 		}
 
 	}
 
+	// jQuery plugin definition
 	$.fn[ns] = function(options) {
 		var args = arguments, result;
 
@@ -249,6 +255,7 @@
 		return typeof result === "undefined" ? this : result;
 	}
 
+	// autoinitialize
 	$(document).ready(function() {
 		$('ul[data-' + ns + '-autoinit')[ns]();
 	});
