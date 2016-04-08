@@ -165,13 +165,13 @@
 			var skew   = 90 - slice;
 
 			// rotate content (set center)
-			this.$ui.content.css("transform", "rotate(" + center + "deg)")
+			this.$ui.content.css("transform", center ? "rotate(" + center + "deg)" : "");
 
 			// rotate and skew li elements
 			that.$ui.li.css("transform", function() {
 				var rotate = 0
-					+ range / -2
-					+ margin / 2
+					+ range  / -2
+					+ margin /  2
 					+ that.$ui.li.index(this) * (slice + margin);
 
 				return "rotate(" + rotate + "deg) skewY(" + -1 * skew + "deg)";
