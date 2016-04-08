@@ -72,7 +72,10 @@
 
 			this.$ui.content.wrap("<div />");
 			this.$ui.wrapper = this.$ui.content.parent()
-				.attr("class", ns);
+				.addClass(ns)
+				.addClass( ! this._support("transform")  ? "notransform"  : "_temp")
+				.addClass( ! this._support("transition") ? "notransition" : "_temp")
+				.removeClass("_temp");
 
 			this.$ui.button = $("<button />")
 				.text("Toggle")
@@ -91,6 +94,25 @@
 			this.$ui.button.on("click", function() {
 				that.toggle();
 			});
+		},
+
+		/**
+		 * Detect browser support
+		 *
+		 * @param  {String}  property
+		 * @return {Boolean}
+		 */
+		_support: function(property) {
+			var element = document.body || document.documentElement;
+			var prefix  = ["", "Moz", "webkit", "Webkit", "Khtml", "O", "ms"];
+
+			for (var i = 0; i < prefix.length; i++) {
+				if (typeof element.style[prefix[i] + property.charAt(0)[prefix[i] ? "toUpperCase" : "toLowerCase"]() + property.substr(1)] === "string") {
+					return true;
+				}
+			}
+
+			return false;
 		},
 
 		/**
