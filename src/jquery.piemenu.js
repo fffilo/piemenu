@@ -26,7 +26,7 @@
 		};
 
 		// options
-		this.options = options;
+		this._options = options;
 
 		// initialize
 		this.init();
@@ -36,6 +36,7 @@
 
 		/**
 		 * Default options
+		 *
 		 * @type {Object}
 		 */
 		_defaults: {
@@ -45,30 +46,24 @@
 		},
 
 		/**
-		 * Fix this.options
+		 * Fix this._options
+		 *
 		 * @return {Void}
 		 */
-		_options: function() {
-			// extend with _defaults
-			this.options = $.extend({}, this._defaults, this.options);
+		_config: function() {
+			var options   = $.extend({}, this._options);
+			this._options = $.extend({}, this._defaults);
 
-			// numeric
-			this.options.range  = this.options.range  * 1;
-			this.options.center = this.options.center * 1;
-			this.options.margin = this.options.margin * 1;
-
-			// not a number
-			if (isNaN(this.options.range))  this.options.range  = _defaults.range;
-			if (isNaN(this.options.center)) this.options.center = _defaults.center;
-			if (isNaN(this.options.margin)) this.options.margin = _defaults.margin;
-
-			// values
-			if (this.options.range  <= 0) this.options.range  = _defaults.range;
-			if (this.options.margin <  0) this.options.margin = 0;
+			for (var key in this._defaults) {
+				if (key in options) {
+					this.options(key, options[key]);
+				}
+			}
 		},
 
 		/**
 		 * Create template
+		 *
 		 * @return {Void}
 		 */
 		_create: function() {
@@ -86,6 +81,7 @@
 
 		/**
 		 * Bind events
+		 *
 		 * @return {Void}
 		 */
 		_bind: function() {
@@ -98,28 +94,60 @@
 		},
 
 		/**
-		 * Calculate rotate and skew for each element
+		 * Get/set option key
+		 *
+		 * @param  {String} key
+		 * @param  {Mixed}  value
+		 * @return {Mixed}
+		 */
+		options: function(key, value) {
+			if (typeof value === "undefined") {
+				return this._options[key];
+			}
+
+			if (key in this._defaults && ! isNaN(value * 1)) {
+				this._options[key] = value * 1;
+
+				if (this._options.range  <=   0) this._options.range  = this._defaults.range;
+				if (this._options.range  >  360) this._options.range  = 360;
+				if (this._options.margin <    0) this._options.margin = 0;
+
+				this.render();
+			}
+		},
+
+		/**
+		 * Set rotate and skew for each element
+		 *
 		 * @return {Void}
 		 */
 		render: function() {
+			// check new elements
 			var that    = this;
 			that.$ui.li = that.$ui.ul.children("li");
 			that.$ui.a  = that.$ui.li.children("a");
 
-			var range  = that.options.range;
-			var margin = that.options.margin;
-			var slice  = range / that.$ui.li.length - margin;
+			// calculations
+			var range  = that.options("range");
+			var margin = that.options("margin");
+			var center = that.options("center");
+			var length = that.$ui.li.length;
+			var slice  = range / length - margin;
 			var skew   = 90 - slice;
-			var start  = range / -2 + that.options.center;
+			var start  = range / -2 + center;
+
+			// rotate content so li elements with rotate(0deg) will be positioned on center
+			that.$ui.content.css("transform", "rotate(" + slice / -2 + "deg)");
 
 			// rotate and skew li elements
-			that.$ui.li.each(function() {
+			that.$ui.li.css("transform", function() {
 				var rotate = 0
 					+ start
 					+ margin / 2
-					+ that.$ui.li.index(this) * (slice + margin);
+					+ that.$ui.li.index(this) * (slice + margin)
+					- slice / -2;
 
-				$(this).css("transform", "rotate(" + rotate + "deg) skewY(" + -1 * skew + "deg)");
+				return "rotate(" + rotate + "deg) skewY(" + -1 * skew + "deg)";
 			});
 
 			// skew and rotate a elements
@@ -128,12 +156,13 @@
 
 		/**
 		 * Constructor
+		 *
 		 * @return {Void}
 		 */
 		init: function() {
 			this.$ui.ul.data("jquery." + ns, this);
 
-			this._options();
+			this._config();
 			this._create();
 			this._bind();
 
@@ -142,6 +171,7 @@
 
 		/**
 		 * Destructor
+		 *
 		 * @return {Void}
 		 */
 		destroy: function() {
@@ -161,7 +191,7 @@
 
 			// clear variables
 			this.$ui     = undefined;
-			this.options = undefined;
+			this._options = undefined;
 		}
 
 	}
@@ -175,11 +205,9 @@
 			var plugin = $(this).data("jquery." + ns);
 
 			if ( ! plugin) {
-				console.log("new plugin")
 				plugin = new Plugin(this, options);
 			}
 			if (plugin && typeof(options) === "string" && typeof(plugin[options]) === "function" && options.substr(0, 1) != "_") {
-				console.log("apply", plugin, Array.prototype.slice.call(arg, 1));
 				val = plugin[options].apply(plugin, Array.prototype.slice.call(arg, 1));
 			}
 		});
