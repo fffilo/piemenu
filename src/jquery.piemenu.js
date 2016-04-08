@@ -247,7 +247,7 @@
 			if ( ! plugin) {
 				plugin = new Plugin(this, options);
 			}
-			if (plugin && typeof(options) === "string" && typeof(plugin[options]) === "function" && options.substr(0, 1) != "_") {
+			if (plugin && $(this).data("jquery." + ns) && typeof(options) === "string" && typeof(plugin[options]) === "function" && options.substr(0, 1) != "_") {
 				result = plugin[options].apply(plugin, Array.prototype.slice.call(args, 1));
 			}
 		});
