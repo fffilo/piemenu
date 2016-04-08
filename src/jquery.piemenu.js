@@ -241,27 +241,35 @@
 
 	}
 
+	// globalize plugin
+	$[ns] = Plugin;
+
 	// jQuery plugin definition
 	$.fn[ns] = function(options) {
 		var args = arguments, result;
 
+		// each selector loop
 		$(this).each(function() {
 			var plugin = $(this).data("jquery." + ns);
 
+			// constructor
 			if ( ! plugin) {
-				plugin = new Plugin(this, options);
+				plugin = new $[ns](this, options);
 			}
+
+			// call plugin public method
 			if (plugin && $(this).data("jquery." + ns) && typeof(options) === "string" && typeof(plugin[options]) === "function" && options.substr(0, 1) != "_") {
 				result = plugin[options].apply(plugin, Array.prototype.slice.call(args, 1));
 			}
 		});
 
+		// plugin public method result or this
 		return typeof result === "undefined" ? this : result;
 	}
 
 	// autoinitialize
 	$(document).ready(function() {
-		$('ul[data-' + ns + '-autoinit')[ns]();
+		$("[data-" + ns + "-autoinit")[ns]();
 	});
 
 })(jQuery);
