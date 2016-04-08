@@ -1,5 +1,6 @@
-.piemenu { position: relative; display: inline-block; width: 20em; height: 20em; font-size: 1em; font-weight: bold; text-align: center; color: #fff; }
-.piemenu > div { width: 100%; height: 100%; }
+.piemenu { position: relative; display: inline-block; width: 100%; max-width: 480px; font-size: 1em; font-weight: bold; text-align: center; color: #fff; }
+.piemenu::before { content: ""; display: block; margin-top: 100%; }
+.piemenu > div { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 .piemenu > div > ul { position: relative; display: block; width: 100%; height: 100%; margin: 0; padding: 0; border-radius: 100%; list-style: none; overflow: hidden; transition: all .2s ease; transform: scale(0); opacity: 0; }
 .piemenu > div > ul::after { content: ""; position: absolute; display: block; left: 50%; top: 50%; width: 50%; height: 50%; transform: translate(-50%, -50%); border-radius: 100%; }
 .piemenu > div > ul > li { position: absolute; top: 0; right: 0; width: 50%; height: 50%; overflow: hidden; transform-origin: 0% 100%; transition: all .2s ease; }
