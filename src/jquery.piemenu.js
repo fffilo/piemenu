@@ -102,7 +102,7 @@
 		 */
 		options: function(key, value) {
 			if (typeof value === "undefined") {
-				return this._options[key];
+				return typeof key !== "string" || typeof this._options[key] === "undefined" ? null : this._options[key];
 			}
 
 			if (key in this._defaults && ! isNaN(value * 1)) {
@@ -206,9 +206,7 @@
 	}
 
 	$.fn[ns] = function(options) {
-		var arg = arguments;
-		var obj = this;
-		var val = this;
+		var args = arguments, result;
 
 		$(this).each(function() {
 			var plugin = $(this).data("jquery." + ns);
@@ -217,11 +215,11 @@
 				plugin = new Plugin(this, options);
 			}
 			if (plugin && typeof(options) === "string" && typeof(plugin[options]) === "function" && options.substr(0, 1) != "_") {
-				val = plugin[options].apply(plugin, Array.prototype.slice.call(arg, 1));
+				result = plugin[options].apply(plugin, Array.prototype.slice.call(args, 1));
 			}
 		});
 
-		return val || obj;
+		return typeof result === "undefined" ? this : result;
 	}
 
 	$(document).ready(function() {
