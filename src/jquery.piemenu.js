@@ -201,6 +201,10 @@
 		 * @return {Void}
 		 */
 		init: function() {
+			if (this.$ui.ul.data("jquery." + ns)) {
+				return;
+			}
+
 			this.$ui.ul.data("jquery." + ns, this);
 
 			this._config();
@@ -220,7 +224,7 @@
 			this.$ui.li.css("transform", "");
 			this.$ui.a.css("transform", "");
 
-			// remove plugin from element
+			// remove plugin
 			this.$ui.ul
 				.removeData("jquery." + ns)
 				.detach()
