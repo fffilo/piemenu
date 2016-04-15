@@ -193,6 +193,7 @@
 		 */
 		toggle: function() {
 			this.$ui.wrapper.toggleClass("active");
+			this.$ui.ul.trigger("piemenutoggle");
 		},
 
 		/**
@@ -266,7 +267,7 @@
 
 	// autoinitialize
 	$(document).ready(function() {
-		$("[data-" + ns + "-autoinit")[ns]();
+		$("[data-" + ns + "-autoinit]")[ns]();
 	});
 
 })(jQuery);
